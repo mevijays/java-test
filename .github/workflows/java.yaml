@@ -38,7 +38,8 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-        
+    - name: List scripts directory
+      run: ls -al .github/scripts      
     - name: Generate Coverage Report and Check Threshold
       run: python .github/scripts/coverage_report.py
       env:
