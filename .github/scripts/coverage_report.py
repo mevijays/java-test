@@ -66,7 +66,17 @@ def generate_coverage_summary(coverage_data, base_metrics=None):
         for metric, value in current_metrics.items():
             summary += f"| **{metric.title()}** | {value:.2f}% |\n"
 
-    return summary, current_metrics
+    # Calculate current metrics for threshold check
+    passed_threshold, failure_message = check_coverage_threshold(
+        current_metrics['instruction'],
+        current_metrics['branch'],
+        current_metrics['line']
+    )
+    
+    if not passed_threshold:
+        summary += failure_message
+
+    return summary, current_metrics, passed_threshold
 
 def check_coverage_threshold(total_instruction, total_branch, total_line, threshold=80.0):
     """Check if coverage metrics meet the minimum threshold"""
@@ -81,9 +91,10 @@ def check_coverage_threshold(total_instruction, total_branch, total_line, thresh
                      if value < threshold]
     
     if failed_metrics:
-        print(f"\n❌ Coverage below {threshold}% threshold for: {', '.join(failed_metrics)}")
-        return False
-    return True
+        failure_message = f"\n### ❌ Coverage Check Failed\n\n"
+        failure_message += f"**Coverage below {threshold}% threshold for:** {', '.join(failed_metrics)}\n"
+        return False, failure_message
+    return True, ""
 
 def main():
     current_csv_path = "target/site/jacoco/jacoco.csv"
@@ -101,18 +112,14 @@ def main():
         base_coverage_data = read_coverage_data(base_csv_path)
         base_metrics = calculate_coverage_metrics(base_coverage_data)
 
-    summary, current_metrics = generate_coverage_summary(current_coverage_data, base_metrics)
+    summary, current_metrics, passed_threshold = generate_coverage_summary(current_coverage_data, base_metrics)
     
     # Write to GitHub Actions summary
     with open(os.environ.get('GITHUB_STEP_SUMMARY', 'coverage_summary.md'), 'w') as f:
         f.write(summary)
 
     # Check coverage threshold
-    if not check_coverage_threshold(
-        current_metrics['instruction'],
-        current_metrics['branch'],
-        current_metrics['line']
-    ):
+    if not passed_threshold:
         exit(1)
 
 if __name__ == "__main__":
