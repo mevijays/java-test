@@ -36,14 +36,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long id, User user) {
-        return userRepository.findById(id)
-                .map(existingUser -> {
-                    existingUser.setName(user.getName());
-                    existingUser.setEmail(user.getEmail());
-                    existingUser.setActive(user.isActive());
-                    return userRepository.save(existingUser);
-                })
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+        User existingUser = userRepository.findById(id)
+            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+        
+        // Update fields if they are not null
+        if (user.getName() != null) {
+            existingUser.setName(user.getName());
+        }
+        if (user.getEmail() != null) {
+            existingUser.setEmail(user.getEmail());
+        }
+        // Phone update might be missing or conditionally implemented
+        if (user.getPhone() != null) {
+            existingUser.setPhone(user.getPhone());  // Add this line if missing
+        }
+        if (user.isActive() != existingUser.isActive()) {
+            existingUser.setActive(user.isActive());
+        }
+        
+        return userRepository.save(existingUser);
     }
 
     @Override
