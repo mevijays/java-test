@@ -1,9 +1,0 @@
-/Users/vijay/java-user-managment/user-management-system/backend/src/main/java/com/example/usermanagement/service/UserService.java
-/Users/vijay/java-user-managment/user-management-system/backend/src/main/java/com/example/usermanagement/exception/GlobalExceptionHandler.java
-/Users/vijay/java-user-managment/user-management-system/backend/src/main/java/com/example/usermanagement/UserManagementApplication.java
-/Users/vijay/java-user-managment/user-management-system/backend/src/main/java/com/example/usermanagement/model/User.java
-/Users/vijay/java-user-managment/user-management-system/backend/src/main/java/com/example/usermanagement/exception/UserNotFoundException.java
-/Users/vijay/java-user-managment/user-management-system/backend/src/main/java/com/example/usermanagement/repository/UserRepository.java
-/Users/vijay/java-user-managment/user-management-system/backend/src/main/java/com/example/usermanagement/config/OpenAPIConfig.java
-/Users/vijay/java-user-managment/user-management-system/backend/src/main/java/com/example/usermanagement/controller/UserController.java
-/Users/vijay/java-user-managment/user-management-system/backend/src/main/java/com/example/usermanagement/service/UserServiceImpl.java
