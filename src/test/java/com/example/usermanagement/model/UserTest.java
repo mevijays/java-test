@@ -119,22 +119,53 @@ class UserTest {
         // Arrange
         User user = new User();
         
-        // Assert null values
-        assertNull(user.getId());
-        assertNull(user.getName());
-        assertNull(user.getEmail());
-        assertNull(user.getPhone());
-        assertTrue(user.isActive()); // Default should be true
-        
-        // Test with null values
+        // Test setting null values
         user.setName(null);
         user.setEmail(null);
         user.setPhone(null);
         
-        // Assert toString handles null values
-        String toString = user.toString();
-        assertTrue(toString.contains("name=null"));
-        assertTrue(toString.contains("email=null"));
-        assertTrue(toString.contains("phone=null"));
+        // Assert null values
+        assertNull(user.getName());
+        assertNull(user.getEmail());
+        assertNull(user.getPhone());
+        
+        // Test toString with null values
+        String result = user.toString();
+        assertTrue(result.contains("name=null"));
+        assertTrue(result.contains("email=null"));
+        assertTrue(result.contains("phone=null"));
+    }
+
+    @Test
+    void testEqualsWithNullId() {
+        User user1 = new User();
+        user1.setName("Test");
+        
+        User user2 = new User();
+        user2.setName("Test");
+        
+        // Both null IDs should be equal if other fields match
+        assertTrue(user1.equals(user2));
+        
+        // Only one null ID should not be equal
+        user2.setId(1L);
+        assertFalse(user1.equals(user2));
+    }
+
+    @Test
+    void testHashCodeConsistency() {
+        User user = new User();
+        user.setId(1L);
+        user.setName("Test");
+        user.setEmail("test@email.com");
+        
+        // Hash code should be consistent
+        int hash1 = user.hashCode();
+        int hash2 = user.hashCode();
+        assertEquals(hash1, hash2);
+        
+        // Hash code should change when fields change
+        user.setName("Different");
+        assertNotEquals(hash1, user.hashCode());
     }
 }

@@ -44,3 +44,5 @@ replay_pid*
 .test-results/
 surefire-reports/
 jacoco.exec
+data/
+coverage_summary.md

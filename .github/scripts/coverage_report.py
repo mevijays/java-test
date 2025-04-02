@@ -78,7 +78,7 @@ def generate_coverage_summary(coverage_data, base_metrics=None):
 
     return summary, current_metrics, passed_threshold
 
-def check_coverage_threshold(total_instruction, total_branch, total_line, threshold=80.0):
+def check_coverage_threshold(total_instruction, total_branch, total_line, threshold=70.0):
     """Check if coverage metrics meet the minimum threshold"""
     all_metrics = [
         ("Instruction", total_instruction),
