@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+user-management,com.example.usermanagement.config,OpenAPIConfig,0,61,0,0,0,21,0,2,0,2
+user-management,com.example.usermanagement.service,UserServiceImpl,17,66,0,0,1,17,3,7,3,7
+user-management,com.example.usermanagement,UserManagementApplication,0,8,0,0,0,3,0,2,0,2
+user-management,com.example.usermanagement.controller,UserController,0,40,0,0,0,11,0,6,0,6
+user-management,com.example.usermanagement.model,User,39,186,24,18,0,6,20,16,0,15
+user-management,com.example.usermanagement.exception,GlobalExceptionHandler,0,6,0,0,0,2,0,2,0,2
+user-management,com.example.usermanagement.exception,UserNotFoundException,0,4,0,0,0,2,0,1,0,1

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">user-management</a> &gt; <a href="index.source.html" class="el_package">com.example.usermanagement.controller</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.example.usermanagement.controller;
+
+import com.example.usermanagement.model.User;
+import com.example.usermanagement.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/users&quot;)
+@CrossOrigin(origins = &quot;http://localhost:3000&quot;)
+@Tag(name = &quot;User Management&quot;, description = &quot;User management APIs&quot;)
+public class UserController {
+
+    private final UserService userService;
+
+<span class="fc" id="L24">    public UserController(UserService userService) {</span>
+<span class="fc" id="L25">        this.userService = userService;</span>
+<span class="fc" id="L26">    }</span>
+
+    @Operation(summary = &quot;Get all users&quot;, description = &quot;Retrieves a list of all users&quot;)
+    @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Successfully retrieved users&quot;)
+    @GetMapping
+    public List&lt;User&gt; getAllUsers() {
+<span class="fc" id="L32">        return userService.getAllUsers();</span>
+    }
+
+    @Operation(summary = &quot;Get user by ID&quot;, description = &quot;Retrieves a user by their ID&quot;)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Successfully retrieved user&quot;),
+        @ApiResponse(responseCode = &quot;404&quot;, description = &quot;User not found&quot;)
+    })
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;User&gt; getUserById(
+        @Parameter(description = &quot;ID of the user to be retrieved&quot;) @PathVariable Long id
+    ) {
+<span class="fc" id="L44">        return userService.getUserById(id)</span>
+<span class="fc" id="L45">                .map(ResponseEntity::ok)</span>
+<span class="fc" id="L46">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    @Operation(summary = &quot;Create new user&quot;, description = &quot;Creates a new user&quot;)
+    @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Successfully created user&quot;)
+    @PostMapping
+    public User createUser(@Valid @RequestBody User user) {
+<span class="fc" id="L53">        return userService.createUser(user);</span>
+    }
+
+    @Operation(summary = &quot;Update user&quot;, description = &quot;Updates an existing user&quot;)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Successfully updated user&quot;),
+        @ApiResponse(responseCode = &quot;404&quot;, description = &quot;User not found&quot;)
+    })
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;User&gt; updateUser(
+        @Parameter(description = &quot;ID of the user to be updated&quot;) @PathVariable Long id,
+        @Valid @RequestBody User user
+    ) {
+<span class="fc" id="L66">        return ResponseEntity.ok(userService.updateUser(id, user));</span>
+    }
+
+    @Operation(summary = &quot;Delete user&quot;, description = &quot;Deletes an existing user&quot;)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Successfully deleted user&quot;),
+        @ApiResponse(responseCode = &quot;404&quot;, description = &quot;User not found&quot;)
+    })
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deleteUser(
+        @Parameter(description = &quot;ID of the user to be deleted&quot;) @PathVariable Long id
+    ) {
+<span class="fc" id="L78">        userService.deleteUser(id);</span>
+<span class="fc" id="L79">        return ResponseEntity.ok().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
