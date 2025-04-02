@@ -12,6 +12,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Fetch all history for all branches
     
     - name: Set up JDK 17
       uses: actions/setup-java@v3
@@ -19,6 +21,15 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    
+    # Run tests on base branch (main) if this is a PR
+    - name: Checkout base branch
+      if: github.event_name == 'pull_request'
+      run: |
+        git checkout origin/${{ github.base_ref }}
+        mvn clean test jacoco:report
+        mv target/site/jacoco/jacoco.csv target/site/jacoco/base_coverage.csv
+        git checkout ${{ github.head_ref }}
         
     - name: Build and Test with Maven
       run: mvn clean test jacoco:report
@@ -28,5 +39,8 @@ jobs:
       with:
         python-version: '3.x'
         
-    - name: Generate Coverage Report
+    - name: Generate Coverage Report and Check Threshold
       run: python .github/scripts/coverage_report.py
+      env:
+        IS_PR: ${{ github.event_name == 'pull_request' }}
+      continue-on-error: false
